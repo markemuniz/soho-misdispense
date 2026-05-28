@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TTA — Misdispense Incident Log</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C97A;
+      --gold-dim: rgba(201,168,76,0.15);
+      --gold-border: rgba(201,168,76,0.3);
+      --bg: #0A0A0A;
+      --surface: #111111;
+      --surface-2: #1A1A1A;
+      --surface-3: #222222;
+      --text: #F0EDE6;
+      --text-muted: #888880;
+      --text-dim: #555550;
+      --red: #C94C4C;
+      --red-dim: rgba(201,76,76,0.15);
+      --green: #4CAF7A;
+      --green-dim: rgba(76,175,122,0.15);
+      --radius: 10px;
+      --radius-sm: 6px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+    }
+
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--gold-border);
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header img {
+      height: 36px;
+      border-radius: 4px;
+    }
+
+    .header-title {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .header-title h1 {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--gold);
+      letter-spacing: 0.03em;
+    }
+
+    .header-title span {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .header-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-sm {
+      background: transparent;
+      border: 1px solid var(--gold-border);
+      color: var(--gold-light);
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 400;
+      cursor: pointer;
+      letter-spacing: 0.02em;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .btn-sm:hover { background: var(--gold-dim); border-color: var(--gold); }
+
+    .btn-sm.danger {
+      border-color: rgba(201,76,76,0.3);
+      color: #E88080;
+    }
+    .btn-sm.danger:hover { background: var(--red-dim); border-color: var(--red); }
+
+    .page {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 36px 24px 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid #252525;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 16px 20px 14px;
+      border-bottom: 1px solid #1E1E1E;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panel-header-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .panel-header h2 {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .panel-body { padding: 20px; }
+
+    .field { margin-bottom: 16px; }
+
+    .field:last-of-type { margin-bottom: 0; }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 10px 12px;
+      background: var(--surface-2);
+      border: 1px solid #2A2A2A;
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      transition: border-color 0.2s, background 0.2s;
+      outline: none;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: var(--gold-border);
+      background: var(--surface-3);
+    }
+
+    input::placeholder, textarea::placeholder { color: var(--text-dim); }
+
+    textarea {
+      resize: vertical;
+      min-height: 90px;
+      line-height: 1.5;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      margin-top: 20px;
+      padding: 13px;
+      background: var(--gold);
+      color: #000;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .submit-btn:hover { background: var(--gold-light); }
+    .submit-btn:active { transform: scale(0.99); }
+    .submit-btn:disabled { background: #3A3A3A; color: var(--text-muted); cursor: not-allowed; }
+
+    .spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(0,0,0,0.2);
+      border-top-color: #000;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .toast {
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 400;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toast.success { background: var(--green-dim); border: 1px solid rgba(76,175,122,0.3); color: var(--green); display: flex; }
+    .toast.error { background: var(--red-dim); border: 1px solid rgba(201,76,76,0.3); color: #E88080; display: flex; }
+
+    .log-controls {
+      padding: 14px 20px;
+      border-bottom: 1px solid #1E1E1E;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .log-search {
+      flex: 1;
+      background: var(--surface-2);
+      border: 1px solid #2A2A2A;
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 300;
+      outline: none;
+    }
+
+    .log-search:focus { border-color: var(--gold-border); }
+    .log-search::placeholder { color: var(--text-dim); }
+
+    .entry-count {
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .log-list { padding: 16px 20px; display: flex; flex-direction: column; gap: 12px; }
+
+    .entry-card {
+      background: var(--surface-2);
+      border: 1px solid #252525;
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      animation: fadeIn 0.25s ease;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .entry-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      gap: 12px;
+    }
+
+    .entry-badge {
+      font-size: 10px;
+      font-family: 'DM Mono', monospace;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 4px 9px;
+      border-radius: 4px;
+      background: var(--gold-dim);
+      color: var(--gold-light);
+      border: 1px solid var(--gold-border);
+      white-space: nowrap;
+    }
+
+    .entry-timestamp {
+      font-size: 11px;
+      font-family: 'DM Mono', monospace;
+      color: var(--text-dim);
+    }
+
+    .entry-product {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .entry-meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .meta-item { display: flex; flex-direction: column; gap: 2px; }
+    .meta-label { font-size: 10px; font-weight: 500; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.07em; }
+    .meta-value { font-size: 13px; color: var(--text-muted); }
+
+    .entry-notes {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.55;
+      padding-top: 12px;
+      border-top: 1px solid #252525;
+    }
+
+    .notes-label { font-size: 10px; font-weight: 500; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 4px; }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-dim);
+    }
+
+    .empty-state svg { margin-bottom: 12px; opacity: 0.3; }
+    .empty-state p { font-size: 13px; }
+
+    .loading-state {
+      text-align: center;
+      padding: 32px;
+      color: var(--text-dim);
+      font-size: 13px;
+      font-family: 'DM Mono', monospace;
+    }
+
+    @media (max-width: 640px) {
+      .page { grid-template-columns: 1fr; }
+      .log-panel { grid-column: 1; }
+      .field-row { grid-template-columns: 1fr; }
+      .entry-meta { grid-template-columns: 1fr 1fr; }
+      header { padding: 14px 16px; }
+      .header-actions { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="TheTravelAgency_SingleLine_Red+Cream (2).png" alt="The Travel Agency">
+  <div class="header-title">
+    <h1>Misdispense Incident Log</h1>
+    <span>Downtown Brooklyn</span>
+  </div>
+  <div class="header-actions">
+    <button class="btn-sm" id="downloadBtn">Export Log</button>
+    <button class="btn-sm danger" id="clearCacheBtn">Clear Cache</button>
+  </div>
+</header>
+
+<div class="page">
+
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-header-dot"></div>
+      <h2>New Incident</h2>
+    </div>
+    <div class="panel-body">
+      <div class="field-row">
+        <div class="field">
+          <label for="incidentDate">Date</label>
+          <input type="date" id="incidentDate" required>
+        </div>
+        <div class="field">
+          <label for="incidentTime">Time</label>
+          <input type="time" id="incidentTime" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="register">Register</label>
+        <input type="text" id="register" placeholder="e.g. Register 2" required>
+      </div>
+
+      <div class="field">
+        <label for="budtender">Budtender</label>
+        <input type="text" id="budtender" placeholder="Full name" required>
+      </div>
+
+      <div class="field">
+        <label for="checker">Checked By</label>
+        <input type="text" id="checker" placeholder="Supervisor / checker name" required>
+      </div>
+
+      <div class="field">
+        <label for="product">Product Misdispensed</label>
+        <input type="text" id="product" placeholder="Product name or SKU" required>
+      </div>
+
+      <div class="field">
+        <label for="notes">Notes</label>
+        <textarea id="notes" placeholder="Describe what happened..." required></textarea>
+      </div>
+
+      <button class="submit-btn" id="submitBtn">
+        <span class="spinner" id="spinner"></span>
+        <span id="btnLabel">Log Incident</span>
+      </button>
+
+      <div class="toast" id="toast"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-header-dot"></div>
+      <h2>Incident Diary</h2>
+    </div>
+    <div class="log-controls">
+      <input class="log-search" type="text" id="searchInput" placeholder="Search by budtender, product, notes...">
+      <span class="entry-count" id="entryCount">— entries</span>
+    </div>
+    <div class="log-list" id="logList">
+      <div class="loading-state" id="loadingState">Loading entries from sheet...</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyhi-WVnp54zwxkfbd_Zq8d_S60SwekdnT4oXxXYDD-ywT2VY_J6npxNPnxKPBhSYh2/exec";
+
+  let allEntries = [];
+
+  const submitBtn = document.getElementById('submitBtn');
+  const spinner = document.getElementById('spinner');
+  const btnLabel = document.getElementById('btnLabel');
+  const toast = document.getElementById('toast');
+  const logList = document.getElementById('logList');
+  const searchInput = document.getElementById('searchInput');
+  const entryCount = document.getElementById('entryCount');
+  const loadingState = document.getElementById('loadingState');
+
+  function setToast(msg, type) {
+    toast.textContent = msg;
+    toast.className = 'toast ' + type;
+  }
+
+  function clearToast() { toast.className = 'toast'; }
+
+  function setLoading(v) {
+    submitBtn.disabled = v;
+    spinner.style.display = v ? 'block' : 'none';
+    btnLabel.textContent = v ? 'Saving...' : 'Log Incident';
+  }
+
+  function formatDate(d) {
+    if (!d) return '';
+    const [y, m, day] = d.split('-');
+    return `${m}/${day}/${y}`;
+  }
+
+  function formatTime(t) {
+    if (!t) return '';
+    const [h, min] = t.split(':');
+    const hh = parseInt(h);
+    const ampm = hh >= 12 ? 'PM' : 'AM';
+    return `${hh % 12 || 12}:${min} ${ampm}`;
+  }
+
+  function renderEntries(entries) {
+    entryCount.textContent = `${entries.length} ${entries.length === 1 ? 'entry' : 'entries'}`;
+    if (!entries.length) {
+      logList.innerHTML = `<div class="empty-state"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg><p>No incidents logged yet.</p></div>`;
+      return;
+    }
+    logList.innerHTML = entries.map(e => `
+      <div class="entry-card">
+        <div class="entry-top">
+          <span class="entry-badge">${formatDate(e.date)} &nbsp;·&nbsp; ${formatTime(e.time)}</span>
+          <span class="entry-timestamp">${e.register || ''}</span>
+        </div>
+        <div class="entry-product">${e.product}</div>
+        <div class="entry-meta">
+          <div class="meta-item">
+            <span class="meta-label">Budtender</span>
+            <span class="meta-value">${e.budtender}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Checked By</span>
+            <span class="meta-value">${e.checker}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Submitted</span>
+            <span class="meta-value">${e.submitted || '—'}</span>
+          </div>
+        </div>
+        <div class="entry-notes">
+          <div class="notes-label">Notes</div>
+          ${e.notes}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  async function loadFromSheet() {
+    try {
+      const res = await fetch(SCRIPT_URL + '?action=get');
+      const text = await res.text();
+      let data = {};
+      try { data = JSON.parse(text); } catch {}
+      if (data.entries && Array.isArray(data.entries)) {
+        allEntries = data.entries.reverse();
+        renderEntries(allEntries);
+      } else {
+        loadLocalFallback();
+      }
+    } catch {
+      loadLocalFallback();
+    }
+  }
+
+  function loadLocalFallback() {
+    const saved = JSON.parse(localStorage.getItem('tta_misdispense_entries') || '[]');
+    allEntries = [...saved].reverse();
+    renderEntries(allEntries);
+  }
+
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.toLowerCase();
+    if (!q) { renderEntries(allEntries); return; }
+    renderEntries(allEntries.filter(e =>
+      (e.budtender||'').toLowerCase().includes(q) ||
+      (e.product||'').toLowerCase().includes(q) ||
+      (e.notes||'').toLowerCase().includes(q) ||
+      (e.register||'').toLowerCase().includes(q) ||
+      (e.checker||'').toLowerCase().includes(q)
+    ));
+  });
+
+  submitBtn.addEventListener('click', async () => {
+    const fields = ['incidentDate','incidentTime','register','budtender','checker','product','notes'];
+    const vals = {};
+    let missing = false;
+    fields.forEach(id => {
+      const el = document.getElementById(id);
+      vals[id] = el.value.trim();
+      if (!vals[id]) { el.style.borderColor = 'var(--red)'; missing = true; }
+      else el.style.borderColor = '';
+    });
+    if (missing) { setToast('Please fill out all fields.', 'error'); return; }
+
+    clearToast();
+    setLoading(true);
+
+    const payload = {
+      date: vals.incidentDate,
+      time: vals.incidentTime,
+      register: vals.register,
+      budtender: vals.budtender,
+      checker: vals.checker,
+      product: vals.product,
+      notes: vals.notes
+    };
+
+    try {
+      const body = new URLSearchParams(payload);
+      const res = await fetch(SCRIPT_URL, { method: 'POST', body });
+      const text = await res.text();
+      let data = {};
+      try { data = JSON.parse(text); } catch {}
+
+      const submitted = new Date().toLocaleDateString();
+      const localEntry = { ...payload, submitted };
+
+      const saved = JSON.parse(localStorage.getItem('tta_misdispense_entries') || '[]');
+      saved.push(localEntry);
+      localStorage.setItem('tta_misdispense_entries', JSON.stringify(saved));
+
+      allEntries.unshift(localEntry);
+      renderEntries(allEntries);
+
+      if (data.ok) {
+        setToast('Incident logged and synced to Google Sheets.', 'success');
+      } else {
+        setToast('Saved locally. Sheet sync may have failed — check connection.', 'error');
+      }
+
+      fields.forEach(id => document.getElementById(id).value = '');
+    } catch (err) {
+      setToast('Network error. Entry saved locally only.', 'error');
+    }
+
+    setLoading(false);
+  });
+
+  document.getElementById('clearCacheBtn').addEventListener('click', () => {
+    if (confirm('Clear locally cached entries? This does not delete entries from Google Sheets.')) {
+      localStorage.removeItem('tta_misdispense_entries');
+      allEntries = [];
+      renderEntries([]);
+    }
+  });
+
+  document.getElementById('downloadBtn').addEventListener('click', () => {
+    if (!allEntries.length) { alert('No entries to export.'); return; }
+    const rows = [['Date','Time','Register','Budtender','Checked By','Product','Notes','Submitted']];
+    allEntries.forEach(e => rows.push([e.date,e.time,e.register,e.budtender,e.checker,e.product,e.notes,e.submitted||'']));
+    const csv = rows.map(r => r.map(v => `"${(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `TTA_Misdispense_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('incidentDate').value = today;
+
+  loadFromSheet();
+</script>
+</body>
+</html>
