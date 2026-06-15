@@ -1066,15 +1066,12 @@
     };
 
     try {
-      const qs = new URLSearchParams(payload).toString();
-      // Use a 2-step approach: fire-and-forget POST then verify via GET
-      await fetch(SCRIPT_URL + '?action=post&' + qs, {
-        method: 'GET',
-        mode: 'no-cors'
-      });
-      // Wait 1.5s for sheet to update, then verify by counting rows
-      await new Promise(r => setTimeout(r, 1500));
-      const data = { ok: true };
+      payload._t = Date.now(); // cache buster
+      const qs  = new URLSearchParams(payload).toString();
+      const res = await fetch(SCRIPT_URL + '?action=post&' + qs);
+      const text = await res.text();
+      let data = {};
+      try { data = JSON.parse(text); } catch {}
 
       const localEntry = { ...payload, submitted: new Date().toLocaleDateString() };
       const saved = JSON.parse(localStorage.getItem('tta_misdispense_entries') || '[]');
