@@ -218,7 +218,16 @@
     }
 
     .mis-table input[type="date"],
-    .mis-table input[type="time"] { color-scheme: light; }
+    .mis-table input[type="time"] {
+      color-scheme: light;
+      color: var(--text);
+      cursor: pointer;
+    }
+    .mis-table input[type="date"]::-webkit-calendar-picker-indicator,
+    .mis-table input[type="time"]::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+      opacity: 0.6;
+    }
 
     .mis-table textarea { min-height: 70px; line-height: 1.55; }
 
