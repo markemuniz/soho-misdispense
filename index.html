@@ -896,6 +896,7 @@
     <div class="log-controls">
       <input class="log-search" type="text" id="searchInput" placeholder="Search by product, employee, notes...">
       <span class="entry-count" id="entryCount">— entries</span>
+      <button class="btn-sm" id="retryBtn" title="Re-sync any locally saved entries that didn't reach Google Sheets">↻ Retry Sync</button>
     </div>
     <div class="log-list" id="logList">
       <div class="loading-state">Loading entries from sheet...</div>
@@ -1131,6 +1132,59 @@
   });
 
   document.getElementById('incidentDate').value = new Date().toISOString().split('T')[0];
+
+  document.getElementById('retryBtn').addEventListener('click', async () => {
+    var btn = document.getElementById('retryBtn');
+    var saved = JSON.parse(localStorage.getItem('tta_misdispense_entries') || '[]');
+    if (!saved.length) {
+      btn.textContent = '✓ Nothing to sync';
+      setTimeout(function() { btn.textContent = '↻ Retry Sync'; }, 2000);
+      return;
+    }
+
+    btn.textContent = 'Syncing...';
+    btn.disabled = true;
+
+    var synced = 0;
+    var failed = 0;
+
+    for (var i = 0; i < saved.length; i++) {
+      var e = saved[i];
+      try {
+        var qs = new URLSearchParams({
+          action:        'post',
+          date:          e.date          || '',
+          time:          e.time          || '',
+          register:      e.register      || '',
+          product:       e.product       || '',
+          correctProduct:e.correctProduct|| '',
+          vaultEmployee: e.vaultEmployee || '',
+          assigned:      e.assigned      || '',
+          budtender:     e.budtender     || '',
+          checker:       e.checker       || '',
+          customer:      e.customer      || '',
+          notes:         e.notes         || ''
+        }).toString();
+        var res  = await fetch(SCRIPT_URL + '?' + qs, { method: 'GET' });
+        var text = await res.text();
+        var data = {};
+        try { data = JSON.parse(text); } catch {}
+        if (data.ok) { synced++; } else { failed++; }
+      } catch (err) {
+        failed++;
+      }
+    }
+
+    btn.disabled = false;
+    if (failed === 0) {
+      btn.textContent = '✓ Synced ' + synced;
+      setTimeout(function() { btn.textContent = '↻ Retry Sync'; }, 3000);
+    } else {
+      btn.textContent = '⚠ ' + failed + ' failed';
+      setTimeout(function() { btn.textContent = '↻ Retry Sync'; }, 3000);
+    }
+  });
+
   loadFromSheet();
 </script>
 <div id="printOverlay">
