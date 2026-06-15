@@ -610,6 +610,120 @@
 
     .print-footer { display: none; }
 
+    .entry-pdf-btn {
+      background: transparent;
+      border: 1px solid var(--border-dark);
+      color: var(--text-dim);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .entry-pdf-btn:hover { background: var(--surface-3); color: var(--text); }
+
+    /* Print overlay for single entry */
+    #printOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #fff;
+      z-index: 9999;
+      padding: 0.7in 0.8in;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    #printOverlay .po-title-bar {
+      background: #1C1A17;
+      color: #fff;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    #printOverlay .po-brand {
+      font-size: 10px;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #D4A83A;
+    }
+
+    #printOverlay .po-heading {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    #printOverlay .po-sub {
+      font-size: 9px;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+    }
+
+    #printOverlay table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid #ccc;
+    }
+
+    #printOverlay table tr { border-bottom: 1px solid #ddd; }
+    #printOverlay table tr:last-child { border-bottom: none; }
+
+    #printOverlay table td.pl {
+      width: 34%;
+      padding: 10px 14px;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #555;
+      background: #F7F5F1;
+      border-right: 1px solid #ddd;
+      vertical-align: middle;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    #printOverlay table td.pv {
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #1A1714;
+      vertical-align: middle;
+    }
+
+    #printOverlay .po-footer {
+      margin-top: 16px;
+      font-size: 10px;
+      color: #999;
+      font-family: 'DM Mono', monospace;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    @media print {
+      #printOverlay {
+        display: block !important;
+        position: absolute;
+        padding: 0;
+      }
+      #printOverlay .po-title-bar {
+        background: #1C1A17 !important;
+      }
+    }
+
     @media (max-width: 640px) {
       .mis-table td.field-label { width: 38%; font-size: 10px; padding: 9px 10px; }
       .mis-table td.field-input { padding: 6px 10px; }
@@ -832,6 +946,15 @@
         <div class="entry-card-head">
           <span class="entry-badge">${fmtDate(e.date)} &nbsp;·&nbsp; ${fmtTime(e.time)}</span>
           <span class="entry-register">${e.register || ''}</span>
+          <button class="entry-pdf-btn" onclick="printEntry(this)" 
+            data-date="${e.date}" data-time="${e.time}" data-register="${e.register || ''}"
+            data-product="${e.product || ''}" data-correctproduct="${e.correctProduct || ''}"
+            data-vaultemployee="${e.vaultEmployee || ''}" data-assigned="${e.assigned || ''}"
+            data-budtender="${e.budtender || ''}" data-checker="${e.checker || ''}"
+            data-customer="${e.customer || ''}" data-notes="${e.notes || ''}">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            PDF
+          </button>
         </div>
         <table class="entry-table">
           <tr><td class="el">Incorrect Product</td><td class="ev">${e.product || '—'}</td></tr>
@@ -980,5 +1103,51 @@
   document.getElementById('incidentDate').value = new Date().toISOString().split('T')[0];
   loadFromSheet();
 </script>
+<div id="printOverlay">
+  <div class="po-title-bar">
+    <span class="po-brand">TTA · Soho</span>
+    <span class="po-heading">Mis-Dispenses</span>
+    <span class="po-sub">Incident Report</span>
+  </div>
+  <table id="printTable"></table>
+  <div class="po-footer">
+    <span id="printOverlayDate"></span>
+    <span>The Travel Agency · Soho · Misdispense Incident Report</span>
+  </div>
+</div>
+
+<script>
+  function printEntry(btn) {
+    var d = btn.dataset;
+    var rows = [
+      ["Date & Time",                       fmtDate(d.date) + "  ·  " + fmtTime(d.time)],
+      ["Register",                           d.register],
+      ["Incorrect Product Sold",             d.product],
+      d.correctproduct ? ["Correct Product", d.correctproduct] : null,
+      ["Employee that Pulled in the Vault",  d.vaultemployee],
+      ["Was Product Assigned?",              (d.assigned || "—").toUpperCase()],
+      d.budtender ? ["Employee that Assigned", d.budtender] : null,
+      ["Employee that Completed Transaction", d.checker],
+      d.customer ? ["Customer",              d.customer] : null,
+      d.notes    ? ["Any Notes",             d.notes]    : null,
+    ].filter(Boolean);
+
+    var html = rows.map(function(r) {
+      return '<tr><td class="pl">' + r[0] + '</td><td class="pv">' + r[1] + '</td></tr>';
+    }).join('');
+
+    document.getElementById('printTable').innerHTML = html;
+    document.getElementById('printOverlayDate').textContent =
+      'Printed: ' + new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+
+    var overlay = document.getElementById('printOverlay');
+    overlay.style.display = 'block';
+    setTimeout(function() {
+      window.print();
+      overlay.style.display = 'none';
+    }, 150);
+  }
+</script>
+
 </body>
 </html>
