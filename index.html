@@ -75,35 +75,6 @@
       text-transform: uppercase;
     }
 
-    .header-actions { margin-left: auto; display: flex; gap: 8px; }
-
-    .btn-sm {
-      background: var(--surface);
-      border: 1px solid var(--border-dark);
-      color: var(--text-muted);
-      padding: 7px 14px;
-      border-radius: var(--radius-sm);
-      font-size: 12px;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 500;
-      cursor: pointer;
-      letter-spacing: 0.02em;
-      transition: background 0.15s, border-color 0.15s, color 0.15s;
-    }
-
-    .btn-sm:hover { background: var(--surface-2); border-color: var(--text-dim); color: var(--text); }
-
-    .btn-sm.gold {
-      background: var(--gold);
-      border-color: var(--gold);
-      color: #fff;
-      font-weight: 600;
-    }
-    .btn-sm.gold:hover { background: var(--gold-light); border-color: var(--gold-light); }
-
-    .btn-sm.danger { border-color: var(--red-border); color: var(--red); }
-    .btn-sm.danger:hover { background: var(--red-dim); }
-
     /* ── PAGE ── */
     .page {
       max-width: 740px;
@@ -377,186 +348,6 @@
       display: flex;
     }
 
-    /* ── LOG PANEL ── */
-    .log-panel-header {
-      padding: 14px 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--surface-2);
-    }
-
-    .panel-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--gold);
-      flex-shrink: 0;
-    }
-
-    .log-panel-header h2 {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-    }
-
-    .log-controls {
-      padding: 10px 16px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--surface);
-    }
-
-    .log-search {
-      flex: 1;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 8px 12px;
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      outline: none;
-      transition: border-color 0.15s;
-    }
-
-    .log-search:focus { border-color: var(--gold-border); }
-    .log-search::placeholder { color: var(--text-dim); }
-
-    .entry-count {
-      font-size: 11px;
-      font-family: 'DM Mono', monospace;
-      color: var(--text-dim);
-      white-space: nowrap;
-    }
-
-    .log-list {
-      padding: 14px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      background: var(--surface);
-    }
-
-    /* ── ENTRY CARDS ── */
-    .entry-card {
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      overflow: hidden;
-      animation: fadeIn 0.22s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(5px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .entry-card-head {
-      background: var(--surface-2);
-      padding: 9px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      gap: 10px;
-    }
-
-    .entry-card-foot {
-      background: var(--surface-2);
-      padding: 8px 14px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .entry-submitted {
-      font-size: 11px;
-      color: var(--text-dim);
-      font-family: 'DM Mono', monospace;
-    }
-
-    .entry-badge {
-      font-size: 11px;
-      font-family: 'DM Mono', monospace;
-      font-weight: 500;
-      color: var(--gold);
-      letter-spacing: 0.04em;
-    }
-
-    .entry-register {
-      font-size: 11px;
-      color: var(--text-dim);
-      font-family: 'DM Mono', monospace;
-    }
-
-    .entry-table { width: 100%; border-collapse: collapse; }
-    .entry-table tr { border-bottom: 1px solid var(--border); }
-    .entry-table tr:last-child { border-bottom: none; }
-
-    .entry-table td.el {
-      width: 32%;
-      padding: 7px 14px;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      background: var(--surface-2);
-      border-right: 1px solid var(--border);
-      vertical-align: top;
-    }
-
-    .entry-table td.ev {
-      padding: 7px 14px;
-      font-size: 13px;
-      color: var(--text-muted);
-      vertical-align: top;
-      line-height: 1.5;
-    }
-
-    .badge-yn {
-      font-size: 11px;
-      font-weight: 600;
-      font-family: 'DM Mono', monospace;
-      padding: 2px 9px;
-      border-radius: 4px;
-    }
-
-    .badge-yn.yes {
-      background: var(--green-dim);
-      color: var(--green);
-      border: 1px solid var(--green-border);
-    }
-
-    .badge-yn.no {
-      background: var(--red-dim);
-      color: var(--red);
-      border: 1px solid var(--red-border);
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 44px 24px;
-      color: var(--text-dim);
-    }
-
-    .empty-state svg { margin-bottom: 10px; opacity: 0.3; }
-    .empty-state p { font-size: 13px; }
-
-    .loading-state {
-      text-align: center;
-      padding: 28px;
-      color: var(--text-dim);
-      font-size: 12px;
-      font-family: 'DM Mono', monospace;
-    }
-
     /* ── PRINT / PDF ── */
     @media print {
       @page {
@@ -567,9 +358,7 @@
       body { background: #fff !important; }
 
       header,
-      .header-actions,
       .form-footer,
-      .log-panel,
       .toast { display: none !important; }
 
       .page { padding: 0; max-width: 100%; gap: 0; }
@@ -635,127 +424,10 @@
 
     .print-footer { display: none; }
 
-    .entry-pdf-btn {
-      background: var(--surface);
-      border: 1px solid var(--border-dark);
-      color: var(--text-muted);
-      padding: 5px 12px;
-      border-radius: var(--radius-sm);
-      font-size: 12px;
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 500;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: background 0.15s, color 0.15s, border-color 0.15s;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-    .entry-pdf-btn:hover { background: var(--surface-3); color: var(--text); border-color: var(--text-dim); }
-
-    /* Print overlay for single entry */
-    #printOverlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: #fff;
-      z-index: 9999;
-      padding: 0.7in 0.8in;
-      font-family: 'DM Sans', sans-serif;
-    }
-
-    #printOverlay .po-title-bar {
-      background: #1C1A17;
-      color: #fff;
-      padding: 12px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 0;
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-    }
-
-    #printOverlay .po-brand {
-      font-size: 10px;
-      font-family: 'DM Mono', monospace;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #D4A83A;
-    }
-
-    #printOverlay .po-heading {
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    #printOverlay .po-sub {
-      font-size: 9px;
-      font-family: 'DM Mono', monospace;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.45);
-    }
-
-    #printOverlay table {
-      width: 100%;
-      border-collapse: collapse;
-      border: 1px solid #ccc;
-    }
-
-    #printOverlay table tr { border-bottom: 1px solid #ddd; }
-    #printOverlay table tr:last-child { border-bottom: none; }
-
-    #printOverlay table td.pl {
-      width: 34%;
-      padding: 10px 14px;
-      font-size: 10px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: #555;
-      background: #F7F5F1;
-      border-right: 1px solid #ddd;
-      vertical-align: middle;
-      -webkit-print-color-adjust: exact;
-      print-color-adjust: exact;
-    }
-
-    #printOverlay table td.pv {
-      padding: 10px 14px;
-      font-size: 13px;
-      color: #1A1714;
-      vertical-align: middle;
-    }
-
-    #printOverlay .po-footer {
-      margin-top: 16px;
-      font-size: 10px;
-      color: #999;
-      font-family: 'DM Mono', monospace;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    @media print {
-      #printOverlay {
-        display: block !important;
-        position: absolute;
-        padding: 0;
-      }
-      #printOverlay .po-title-bar {
-        background: #1C1A17 !important;
-      }
-    }
-
     @media (max-width: 640px) {
       .mis-table td.field-label { width: 38%; font-size: 10px; padding: 9px 10px; }
       .mis-table td.field-input { padding: 6px 10px; }
       header { padding: 12px 16px; }
-      .header-actions .btn-sm:not(.gold) { display: none; }
       .datetime-row { flex-wrap: wrap; gap: 6px; }
       .form-footer-btns { flex-direction: column; }
     }
@@ -768,10 +440,6 @@
   <div class="header-title">
     <h1>Misdispense Incident Log</h1>
     <span>Soho</span>
-  </div>
-  <div class="header-actions">
-    <button class="btn-sm" id="downloadBtn">Export CSV</button>
-    <button class="btn-sm danger" id="clearCacheBtn">Clear Cache</button>
   </div>
 </header>
 
@@ -887,36 +555,18 @@
     </div>
   </div>
 
-  <!-- LOG PANEL -->
-  <div class="panel log-panel">
-    <div class="log-panel-header">
-      <div class="panel-dot"></div>
-      <h2>Incident Diary</h2>
-    </div>
-    <div class="log-controls">
-      <input class="log-search" type="text" id="searchInput" placeholder="Search by product, employee, notes...">
-      <span class="entry-count" id="entryCount">— entries</span>
-    </div>
-    <div class="log-list" id="logList">
-      <div class="loading-state">Loading entries from sheet...</div>
-    </div>
-  </div>
-
 </div>
 
 <script>
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw4UjJ644UWUo-ZvUK0IRu5C17J4THepEoowWCsiVqjfmQP8zvOyXXjmaXlGsX1-v1b/exec";
 
-  let allEntries = [];
   let assignedValue = '';
 
-  const submitBtn   = document.getElementById('submitBtn');
-  const spinner     = document.getElementById('spinner');
-  const btnLabel    = document.getElementById('btnLabel');
-  const toast       = document.getElementById('toast');
-  const logList     = document.getElementById('logList');
-  const searchInput = document.getElementById('searchInput');
-  const entryCount  = document.getElementById('entryCount');
+  const submitBtn = document.getElementById('submitBtn');
+  const spinner   = document.getElementById('spinner');
+  const btnLabel  = document.getElementById('btnLabel');
+  const toast     = document.getElementById('toast');
+  const dateInput = document.getElementById('incidentDate');
 
   function selectYN(val) {
     assignedValue = val;
@@ -937,106 +587,20 @@
     btnLabel.textContent = v ? 'Saving...' : 'Log Incident';
   }
 
-  function fmtDate(d) {
-    if (!d) return '';
-    const [y, m, day] = d.split('-');
-    return `${m}/${day}/${y}`;
+  // Today's date in the store's local time (toISOString would roll to tomorrow after 8 PM)
+  function todayLocal() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   }
 
-  function fmtTime(t) {
-    if (!t) return '';
-    const [h, min] = t.split(':');
-    const hh = parseInt(h);
-    return `${hh % 12 || 12}:${min} ${hh >= 12 ? 'PM' : 'AM'}`;
+  function resetForm() {
+    ['incidentDate','incidentTime','register','product','correctProduct',
+     'vaultEmployee','budtender','checker','customer','notes'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    selectYN('');
+    dateInput.value = todayLocal();
   }
-
-  function ynBadge(val) {
-    if (!val) return '—';
-    const cls = val.toLowerCase() === 'yes' ? 'yes' : 'no';
-    return `<span class="badge-yn ${cls}">${val.toUpperCase()}</span>`;
-  }
-
-  function renderEntries(entries) {
-    entryCount.textContent = `${entries.length} ${entries.length === 1 ? 'entry' : 'entries'}`;
-    if (!entries.length) {
-      logList.innerHTML = `<div class="empty-state">
-        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/>
-          <rect x="9" y="3" width="6" height="4" rx="1"/>
-        </svg>
-        <p>No incidents logged yet.</p>
-      </div>`;
-      return;
-    }
-    logList.innerHTML = entries.map(e => `
-      <div class="entry-card">
-        <div class="entry-card-head">
-          <span class="entry-badge">${fmtDate(e.date)} &nbsp;·&nbsp; ${fmtTime(e.time)}</span>
-          <span class="entry-register">${e.register ? 'Register ' + e.register : ''}</span>
-        </div>
-        <table class="entry-table">
-          <tr><td class="el">Incorrect Product</td><td class="ev">${e.product || '—'}</td></tr>
-          ${e.correctProduct ? `<tr><td class="el">Correct Product</td><td class="ev">${e.correctProduct}</td></tr>` : ''}
-          <tr><td class="el">Vault Employee</td><td class="ev">${e.vaultEmployee || '—'}</td></tr>
-          <tr><td class="el">Product Assigned?</td><td class="ev">${ynBadge(e.assigned)}</td></tr>
-          ${e.budtender ? `<tr><td class="el">Assigned By</td><td class="ev">${e.budtender}</td></tr>` : ''}
-          <tr><td class="el">Completed By</td><td class="ev">${e.checker || '—'}</td></tr>
-          ${e.customer ? `<tr><td class="el">Customer</td><td class="ev">${e.customer}</td></tr>` : ''}
-          ${e.notes ? `<tr><td class="el">Notes</td><td class="ev">${e.notes}</td></tr>` : ''}
-        </table>
-        <div class="entry-card-foot">
-          <span class="entry-submitted">Logged ${e.submitted || fmtDate(e.date)}</span>
-          <button class="entry-pdf-btn" onclick="printEntry(this)"
-            data-date="${e.date}" data-time="${e.time}" data-register="${e.register || ''}"
-            data-product="${e.product || ''}" data-correctproduct="${e.correctProduct || ''}"
-            data-vaultemployee="${e.vaultEmployee || ''}" data-assigned="${e.assigned || ''}"
-            data-budtender="${e.budtender || ''}" data-checker="${e.checker || ''}"
-            data-customer="${e.customer || ''}" data-notes="${e.notes || ''}">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-            Save as PDF
-          </button>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  async function loadFromSheet() {
-    try {
-      const res = await fetch(SCRIPT_URL + '?action=get');
-      const text = await res.text();
-      let data = {};
-      try { data = JSON.parse(text); } catch {}
-      if (data.entries && Array.isArray(data.entries)) {
-        allEntries = [...data.entries].reverse();
-        renderEntries(allEntries);
-      } else {
-        loadLocalFallback();
-      }
-    } catch {
-      loadLocalFallback();
-    }
-  }
-
-  function loadLocalFallback() {
-    const saved = JSON.parse(localStorage.getItem('tta_misdispense_entries') || '[]');
-    allEntries = [...saved].reverse();
-    renderEntries(allEntries);
-  }
-
-  searchInput.addEventListener('input', () => {
-    const q = searchInput.value.toLowerCase();
-    if (!q) { renderEntries(allEntries); return; }
-    renderEntries(allEntries.filter(e =>
-      (e.product        || '').toLowerCase().includes(q) ||
-      (e.correctProduct || '').toLowerCase().includes(q) ||
-      (e.vaultEmployee  || '').toLowerCase().includes(q) ||
-      (e.budtender      || '').toLowerCase().includes(q) ||
-      (e.checker        || '').toLowerCase().includes(q) ||
-      (e.customer       || '').toLowerCase().includes(q) ||
-      (e.notes          || '').toLowerCase().includes(q) ||
-      (e.register       || '').toLowerCase().includes(q)
-    ));
-  });
 
   submitBtn.addEventListener('click', async () => {
     const required = ['incidentDate','incidentTime','register','product','vaultEmployee','checker','notes'];
@@ -1063,122 +627,38 @@
       checker:       document.getElementById('checker').value.trim(),
       customer:      document.getElementById('customer').value.trim(),
       notes:         document.getElementById('notes').value.trim(),
+      _t:            Date.now(), // cache buster
     };
 
     try {
-      payload._t = Date.now(); // cache buster
       const qs  = new URLSearchParams(payload).toString();
       const res = await fetch(SCRIPT_URL + '?action=post&' + qs);
       const text = await res.text();
       let data = {};
       try { data = JSON.parse(text); } catch {}
 
-      const localEntry = { ...payload, submitted: new Date().toLocaleDateString() };
-      const saved = JSON.parse(localStorage.getItem('tta_misdispense_entries') || '[]');
-      saved.push(localEntry);
-      localStorage.setItem('tta_misdispense_entries', JSON.stringify(saved));
-      allEntries.unshift(localEntry);
-      renderEntries(allEntries);
-
-      setToast(data.ok ? 'Incident logged and synced to Google Sheets.' : 'Saved locally. Sheet sync may have failed.', data.ok ? 'success' : 'error');
-
-      ['incidentDate','incidentTime','register','product','correctProduct',
-       'vaultEmployee','budtender','checker','customer','notes'].forEach(id => {
-        document.getElementById(id).value = '';
-      });
-      assignedValue = '';
-      selectYN('');
-
+      if (data.ok) {
+        setToast('Incident logged to Google Sheets.', 'success');
+        resetForm();
+      } else {
+        // Form is left filled in so nothing is lost
+        setToast("Couldn't confirm the sheet received this. Check the sheet before trying again.", 'error');
+      }
     } catch {
-      setToast('Network error. Entry saved locally only.', 'error');
+      setToast('Network error. Your entry is still on the form. Check the sheet before trying again.', 'error');
     }
 
     setLoading(false);
   });
 
-  // PDF export — prints only the form, hides everything else
+  // PDF export: prints only the form, hides everything else
   document.getElementById('pdfBtn').addEventListener('click', () => {
     document.getElementById('printDate').textContent =
       'Printed: ' + new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
     window.print();
   });
 
-  document.getElementById('clearCacheBtn').addEventListener('click', () => {
-    if (confirm('Clear locally cached entries? This does not delete entries from Google Sheets.')) {
-      localStorage.removeItem('tta_misdispense_entries');
-      allEntries = [];
-      renderEntries([]);
-    }
-  });
-
-  document.getElementById('downloadBtn').addEventListener('click', () => {
-    if (!allEntries.length) { alert('No entries to export.'); return; }
-    const rows = [['Date','Time','Register','Incorrect Product','Correct Product',
-      'Vault Employee','Product Assigned?','Assigned By','Completed By','Customer','Notes','Submitted']];
-    allEntries.forEach(e => rows.push([
-      e.date, e.time, e.register, e.product,
-      e.correctProduct||'', e.vaultEmployee||'',
-      e.assigned||'', e.budtender||'',
-      e.checker||'', e.customer||'',
-      e.notes, e.submitted||''
-    ]));
-    const csv  = rows.map(r => r.map(v => `"${(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const a    = document.createElement('a');
-    a.href     = URL.createObjectURL(blob);
-    a.download = `TTA_Misdispense_${new Date().toISOString().split('T')[0]}.csv`;
-    a.click();
-    URL.revokeObjectURL(a.href);
-  });
-
-  document.getElementById('incidentDate').value = new Date().toISOString().split('T')[0];
-
-  loadFromSheet();
-</script>
-<div id="printOverlay">
-  <div class="po-title-bar">
-    <span class="po-brand">TTA · Soho</span>
-    <span class="po-heading">Mis-Dispenses</span>
-    <span class="po-sub">Incident Report</span>
-  </div>
-  <table id="printTable"></table>
-  <div class="po-footer">
-    <span id="printOverlayDate"></span>
-    <span>The Travel Agency · Soho · Misdispense Incident Report</span>
-  </div>
-</div>
-
-<script>
-  function printEntry(btn) {
-    var d = btn.dataset;
-    var rows = [
-      ["Date & Time",                       fmtDate(d.date) + "  ·  " + fmtTime(d.time)],
-      ["Register",                           d.register],
-      ["Incorrect Product Sold",             d.product],
-      d.correctproduct ? ["Correct Product", d.correctproduct] : null,
-      ["Employee that Pulled in the Vault",  d.vaultemployee],
-      ["Was Product Assigned?",              (d.assigned || "—").toUpperCase()],
-      d.budtender ? ["Employee that Assigned", d.budtender] : null,
-      ["Employee that Completed Transaction", d.checker],
-      d.customer ? ["Customer",              d.customer] : null,
-      d.notes    ? ["Any Notes",             d.notes]    : null,
-    ].filter(Boolean);
-
-    var html = rows.map(function(r) {
-      return '<tr><td class="pl">' + r[0] + '</td><td class="pv">' + r[1] + '</td></tr>';
-    }).join('');
-
-    document.getElementById('printTable').innerHTML = html;
-    document.getElementById('printOverlayDate').textContent =
-      'Printed: ' + new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
-
-    var overlay = document.getElementById('printOverlay');
-    overlay.style.display = 'block';
-    setTimeout(function() {
-      window.print();
-      overlay.style.display = 'none';
-    }, 150);
-  }
+  dateInput.value = todayLocal();
 </script>
 
 </body>
